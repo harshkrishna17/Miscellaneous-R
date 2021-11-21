@@ -1,5 +1,5 @@
 library(devtools)
-devtools:::install_github("statsbomb/StatsBombR")
+devtools::install_github("statsbomb/StatsBombR")
 library(StatsBombR)
 library(tidyverse)
 
