@@ -1,18 +1,18 @@
 ---
-title: "plot_pizza"
+title: "Creating Pizza Plots"
 author: "Harsh Krishna"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{plot_pizza}
+  %\VignetteIndexEntry{Creating Pizza Plots}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 # Introduction 
 
-`plot_pizza` is the function that allows users to plot percentile plots (popularly called pizza plots due to their appearance) with minimal lines of code.
-The funtion allows for plotting both single and comparison player plots, the usage of which shall be outlined below.
+`plot_pizza` is the function that allows users to plot **percentile plots** (popularly called pizza plots due to their appearance) with minimal lines of code.
+The funtion allows for plotting both **single** and **comparison** player plots, the usage of which shall be outlined below.
 
 The data inputted into the function can be scraped from the `worldfootballR` library.
 
@@ -35,7 +35,7 @@ Users have the option to select their own stats using the *custom* template as w
 Filter for the season required and select the colours for each stat subgroup according to your liking.
 There are three colour theme's for the background, namely *dark*, *black* and *white*.
 
-### Custom Stats 
+### Custom Stats - Single Player
 
 Users can use custom stats within `plot_pizza` as well. 
 
@@ -76,7 +76,7 @@ There are three colour theme's for the background, namely *dark*, *black* and *w
 **Special care must be taken to remove any accents from the name of the player.** 
 **For example, *Dušan Vlahović* should be inputted as *Dusan Vlahovic*.**
 
-### Custom Stats
+### Custom Stats - Comparison Plot
 
 For using your own stat selections with comparison plots, the following format is to be used.
 
@@ -93,10 +93,13 @@ data2 <- data2[c(3,8,13,24,42,128,45,115,133,107,101,102,26,147),]
 data <- rbind(data1, data2)
 
 comp_pizza <- plot_pizza(data = data, type = "comparison", template = "forward",
-                         player_1 = "Tammy Abraham", player_2 = "Dominic Calvert_Lewin", 
+                         player_1 = "Tammy Abraham", player_2 = "Dominic Calvert-Lewin", 
                          season_player_1 = "Last 365 Days", season_player_2 = "Last 365 Days",
                          colour_compare = "#41ab5d", theme = "black")
 comp_pizza
 ```
 
-##
+## Contributors
+
+A big thanks to [Robin Wilhelmus](https://twitter.com/RobinWilhelmus) for the tutorial that helped create the plots in the function. 
+Thanks to [Ham](https://twitter.com/DyslexicDdue) for inspring the design for the comparison pizza plots with the excellent Football Slices project.
