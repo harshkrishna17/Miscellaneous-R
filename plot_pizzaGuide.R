@@ -38,19 +38,6 @@ plot <- plot_pizza(data = data, type = "comparison", template = "forward",
                    colour_compare = "lightgreen", theme = "black")
 plot
 
-#' Saving the plot. Set working directory to the file where you 
-#' want your plot exported. Change the slashes from (\) to (/).
-#' Example:
-#' Convert setwd("C:\Users\harsh_1mwi2o4\Downloads") to setwd("C:/Users/harsh_1mwi2o4/Downloads"), then run
-
-setwd("C:/Users/harsh_1mwi2o4/Downloads")
-
-#' Run these following lines depending on your operating system
-
-## Windows
+# Save 
 
 ggsave("image.png", bg = "black", width = 2500, height = 2800, units = "px")
-
-## Mac
-
-system("convert -trim image.png new_image.png")
