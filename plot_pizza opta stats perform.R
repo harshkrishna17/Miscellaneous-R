@@ -47,42 +47,41 @@ plot_pizza <- function(data, type = "", template,
     data <- data %>%
       filter(scouting_period == season)
     
+    data <- data %>% 
+      mutate(stat = case_when(
+        Statistic == "Non-Penalty Goals" |
+          Statistic == "Non-Penalty xG" |
+          Statistic == "Shots Total" |
+          Statistic == "Assists" |
+          Statistic == "xAG" |
+          Statistic == "npxG + xAG" ~ "Attacking",
+        Statistic == "Shot-Creating Actions" |
+          Statistic == "Passes Attempted" |
+          Statistic == "Pass Completion %" |
+          Statistic == "Progressive Passes" |
+          Statistic == "Dribbles Completed" |
+          Statistic == "Touches (Att Pen)" |
+          Statistic == "Progressive Passes Rec" ~ "Possession",
+        Statistic == "Tackles" |
+          Statistic == "Interceptions" |
+          Statistic == "Blocks" |
+          Statistic == "Clearances" |
+          Statistic == "Aerials won" ~ "Defending",
+        TRUE ~ NA_character_
+      ))
+    
     if (template == "outfielder") {
       
-      data <- data %>% 
-        mutate(stat = case_when(
-          Statistic == "Non-Penalty Goals" |
-            Statistic == "Non-Penalty xG" |
-            Statistic == "Shots Total" |
-            Statistic == "Assists" |
-            Statistic == "xAG" |
-            Statistic == "npxG + xAG" ~ "Attacking",
-          Statistic == "Shot-Creating Actions" |
-            Statistic == "Passes Attempted" |
-            Statistic == "Pass Completion %" |
-            Statistic == "Progressive Passes" |
-            Statistic == "Dribbles Completed" |
-            Statistic == "Touches (Att Pen)" |
-            Statistic == "Progressive Passes Rec" ~ "Possession",
-          Statistic == "Tackles" |
-            Statistic == "Interceptions" |
-            Statistic == "Blocks" |
-            Statistic == "Clearances" |
-            Statistic == "Aerials won" ~ "Defending",
-          TRUE ~ NA_character_
-        ))
-      
-      data_selected <- data[c(1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18), ]
+      data_selected <- data[c(1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18), ]
       
     }
     else if (template == "goalkeeper") {
       
-      data <- data %>%
+      data_selected <- data[c(1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13), ]
+      data_selected <- data_selected %>%
         mutate(stat = case_when(Statistic == "Goals Against" |
                                   Statistic == "PSxG/SoT" |
                                   Statistic == "Save Percentage" |
-                                  Statistic == "Save% (Penalty Kicks)" |
-                                  Statistic == "Clean Sheet Percentage" |
                                   Statistic == "PSxG-GA" ~ "Defending",
                                 Statistic == "Touches" |
                                   Statistic == "Launch %" |
@@ -90,11 +89,11 @@ plot_pizza <- function(data, type = "", template,
                                   Statistic == "Avg. Length of Goal Kicks" ~ "Possession",
                                 TRUE ~ "Attacking"))
       
-      data_selected <- data[c(1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13), ]
-      
     }
     else if (template == "custom") {
+      
       data_selected <- data
+      
     }
     
 #    if (template == "forward") {
@@ -263,16 +262,22 @@ plot_pizza <- function(data, type = "", template,
       filter(scouting_period == season_player_2)
     
     if (template == "outfielder") {
-      data1 <- data1[c(1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18), ]
-      data2 <- data2[c(1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18), ]
+      
+      data1 <- data1[c(1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18), ]
+      data2 <- data2[c(1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18), ]
+      
     }
     else if (template == "goalkeeper") {
+      
       data1 <- data1[c(1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13), ]
       data2 <- data2[c(1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13), ]
+      
     }
     else if (template == "custom") {
+      
       data1
       data2
+      
     }
     
 #    if (template == "forward") {
