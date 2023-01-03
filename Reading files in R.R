@@ -1,7 +1,7 @@
 # Set working directory to the folder which has your data
 # (the datasets sir sent through mail)
 
-# use getwd() to find current working directory 
+#Use getwd() to find current working directory 
 
 getwd()
 
