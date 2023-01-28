@@ -1,0 +1,246 @@
+---
+title: "Statistics with R (SEC) Assignment"
+author: "Harsh Krishna (2022ECO1005)"
+date: '2023-01-28'
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducing the Dataset 
+
+The dataset we are using for this document is the `mtcars` dataset available in RStudio. **"mtcars"** stands for Motor Trend Car Road Tests. The dataset was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).
+
+Here is the structure of the dataset. 
+
+```{r}
+str(mtcars)
+```
+
+It says that there are 32 observations of 11 variables. This means that the `mtcars` dataset has 11 columns with 32 rows. The names of the rows are given as *"mpg", "cyl", "disp"* etc. 
+
+Let us do some more exploratory analysis on the dataset. 
+
+### Head
+
+Running the `head()` function on the dataset will give us the first 10 rows of the dataset after specifying so.
+
+```{r}
+head(mtcars, 10)
+```
+
+### Tail 
+
+Running `tail(mtcars)` will give us the last 12 rows of the dataset after saying so. 
+
+```{r}
+tail(mtcars, 12)
+```
+
+### Dimensions
+
+Let us use the `dim()` function to take a look at the dimensions of the dataset. 
+
+```{r}
+dim(mtcars)
+```
+
+### Summary 
+
+We then run the `summary()` function to show each column, it’s data type and a few other attributes which are especially useful for numeric attributes. We can see that for all the numeric attributes, it also displays min, 1st quartile, median, mean, 3rd quartile and max values.
+
+```{r}
+summary(mtcars)
+```
+
+# Loading Packages
+
+We will now install and load the packages that will be extensively used in this assignment. The packages `dplyr` and `ggplot2`, both from the **tidyverse** package will be used for analysis of the `mtcars` dataset in this document.
+
+Install the packages if you have not already.
+
+```{r, results='hide'}
+# install.packages("dplyr")
+# install.packages("ggplot2")
+
+library(dplyr)
+library(ggplot2)
+```
+
+# Using the dplyr package
+
+Let us familiarize ourselves with the `dplyr` package. We will use functions such as `filter()`, `mutate()`, `select()`, `transmute()`, `arrange()`, `group_by()` and `summarise()`. 
+
+### Filtering the dataset 
+
+Let us use the `filter()` function to filter the dataset down to our required variables. 
+
+```{r}
+data1 <- mtcars %>%
+  filter(cyl == 4)
+```
+
+This chink of code will filter our dataset to cars with only 4 cylinders. We have defined it to a new dataset called `data1`. Let us take a look at the structure of `data1` now. 
+
+```{r}
+str(data1)
+```
+
+We see that the new dataset only has the number 4 in the *cyl* column. 
+
+### Operating on columns 
+
+We can use the `mutate()` function to add, subtract, multiply and divide any number of columns. Let us use it in this example to create a new column which is the sum of two already existing columns in the dataset. 
+
+```{r}
+data2 <- mtcars %>%
+  mutate(gear_cyl = gear + cyl)
+```
+
+We have added the *gear* and *cyl* columns together. Let us check the structure of the dataset now. 
+
+```{r}
+str(data2)
+```
+
+The new dataset `data2` has 12 columns now, as we added a new column *gear_cyl* to it. 
+
+### Transmute 
+
+We can use the `transmute()` function as follows
+
+```{r}
+data3 <- mtcars %>%
+  transmute(cyl_new = cyl * 2)
+```
+
+We see that the new data is as follows.
+
+```{r}
+str(data3)
+```
+
+We see that there is only one column, `cyl_new` and this contains the values of the original cylinder column multiplied by 2. 
+
+### Arrange
+
+The `arrange()` function orders a specific column of a dataset in in an ascending order. You can do the opposite and arrange the column in descending order by adding a `desc()` within the arrange function. It is done as follows. 
+
+```{r}
+data4 <- mtcars %>%
+  arrange(cyl)
+
+data5 <- mtcars %>%
+  arrange(desc(cyl))
+```
+
+We check the structure of `data4`
+
+```{r}
+str(data4)
+```
+
+We check the structure of `data5`
+
+```{r}
+str(data5)
+```
+
+We see that the *cyl* column is ascending and descending in each dataset respectively.
+
+### Selecting specific columns 
+
+We can select only the columns we require. 
+
+```{r}
+data6 <- mtcars %>%
+  select(cyl, wt)
+```
+
+When we check the structure of the new data, we can only see two columns, the only ones we selected. 
+
+```{r}
+str(data6)
+```
+
+### Grouping 
+
+We can group rows of the dataset column based on their similarity. 
+
+```{r}
+data7 <- mtcars %>%
+  group_by(cyl) %>%
+  summarise(wt, num = n())
+```
+
+This grouped the dataset on the basis of the number of cylinders each car has, and added up the weight's of the cars with the same number of cylinders. It also shows you the number of cars in each category. 
+
+```{r}
+data7
+```
+
+# Plotting 
+
+The `ggplot2` package is used for creating beautiful visualizations. It works on the principle of layers, building plots layer-by-layer. We will create scatter plots in this assignment. Let us create a basic scatterplot. 
+
+```{r}
+ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  geom_point()
+```
+
+We can increase the size of the points to make the plot more readable.
+
+```{r}
+g <- ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  geom_point(size = 3)
+
+g
+```
+
+We can also add a smoothed line to show the trend of the data in the scatter plot. We can add the geometry for the smoothed line to the already created object g. 
+
+```{r}
+g + 
+  geom_smooth()
+```
+
+We can join the points with a line using a geometry function called `geom_line()`
+
+```{r}
+g +
+  geom_line(colour = "red")
+```
+
+We can also draw a line on only the points representing the first 6 rows of the dataset. 
+
+```{r}
+g + 
+  geom_line(data = head(mtcars), colour = "blue")
+```
+
+We can colour the original scatter plot on the basis of another column. 
+
+```{r}
+ggplot(mtcars) +
+  geom_point(aes(x = wt, y = mpg, colour = factor(cyl)), size = 3)
+```
+
+Similarly, we can do the same with the shape of the points on the plot as well. 
+
+```{r}
+ggplot(mtcars) +
+  geom_point(aes(x = wt, y = mpg, shape = factor(cyl)), size = 3)
+```
+
+Instead of colouring the points on the basis of a discrete variable by wrapping it in a `factor()`, we can also colour the points on the basis of a continuous variable. The output would be as follows.
+
+```{r}
+ggplot(mtcars) +
+  geom_point(aes(x = wt, y = mpg, colour = hp), size = 3)
+```
+
+This document shows the ways that we can use the `dplyr` and `ggplot2` packages along with the pipe operators to produce meaningful analysis of data. 
