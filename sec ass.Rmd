@@ -1,69 +1,69 @@
 ---
-title: "Statistics with R (SEC) Assignment"
+title: "Statistics with R (SEC - Assignment)"
 author: "Harsh Krishna (2022ECO1005)"
-date: '2023-01-28'
-output:
-  html_document: default
-  pdf_document: default
+output: html_document
+date: '2023-01-29'
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Introducing the Dataset 
+## Introducing the Dataset 
 
-The dataset we are using for this document is the `mtcars` dataset available in RStudio. **"mtcars"** stands for Motor Trend Car Road Tests. The dataset was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).
+The data set we are using for this document is the **iris** data set available in RStudio.
 
-Here is the structure of the dataset. 
+The Iris flower data set or Fisher's Iris data set is a multivariate data set used and made famous by the British statistician and biologist Ronald Fisher in his 1936 paper The use of multiple measurements in taxonomic problems as an example of linear discriminant analysis.[1] It is sometimes called Anderson's Iris data set because Edgar Anderson collected the data to quantify the morphologic variation of Iris flowers of three related species.
+
+Here is the structure of the data set. 
 
 ```{r}
-str(mtcars)
+str(iris)
 ```
 
-It says that there are 32 observations of 11 variables. This means that the `mtcars` dataset has 11 columns with 32 rows. The names of the rows are given as *"mpg", "cyl", "disp"* etc. 
+The data set consists of 50 samples from each of three species of Iris (Iris setosa, Iris virginica and Iris versicolor). Four features were measured from each sample: the length and the width of the sepals and petals, in centimeters. 
 
-Let us do some more exploratory analysis on the dataset. 
+There are 150 observations of 5 variables. This means that the **mtcars** data set has 5 columns with 150 rows. The names of the rows are given as *"Sepal.Length", "Sepal.Width"* etc. 
+
+Some more exploratory analysis on the data set follows. 
 
 ### Head
 
-Running the `head()` function on the dataset will give us the first 10 rows of the dataset after specifying so.
+Running the `head()` function on the data set will give us the first 6 rows of the data set.
 
 ```{r}
-head(mtcars, 10)
+head(iris)
 ```
 
 ### Tail 
 
-Running `tail(mtcars)` will give us the last 12 rows of the dataset after saying so. 
+Running `tail(mtcars)` gives us the last 6 rows of the data set.
 
 ```{r}
-tail(mtcars, 12)
+tail(iris)
 ```
 
 ### Dimensions
 
-Let us use the `dim()` function to take a look at the dimensions of the dataset. 
+The `dim()` function is used to take a look at the dimensions of the data set. 
 
 ```{r}
-dim(mtcars)
+dim(iris)
 ```
 
 ### Summary 
 
-We then run the `summary()` function to show each column, it’s data type and a few other attributes which are especially useful for numeric attributes. We can see that for all the numeric attributes, it also displays min, 1st quartile, median, mean, 3rd quartile and max values.
+The `summary()` function is to show each column, it’s data type and a few other attributes which are especially useful for numeric attributes. We can see that for all the numeric attributes, it also displays min, 1st quartile, median, mean, 3rd quartile and max values.
 
 ```{r}
-summary(mtcars)
+summary(iris)
 ```
 
-# Loading Packages
+## Loading Packages
 
-We will now install and load the packages that will be extensively used in this assignment. The packages `dplyr` and `ggplot2`, both from the **tidyverse** package will be used for analysis of the `mtcars` dataset in this document.
+Install and load the packages that will be extensively used in this assignment. The packages **dplyr** and **ggplot2**, both from the **tidyverse** package will be used for analysis of the **mtcars** data set in this document.
 
-Install the packages if you have not already.
-
-```{r, results='hide'}
+```{r, eval=FALSE}
 # install.packages("dplyr")
 # install.packages("ggplot2")
 
@@ -71,43 +71,46 @@ library(dplyr)
 library(ggplot2)
 ```
 
-# Using the dplyr package
+```{r, include=FALSE}
+library(dplyr)
+library(ggplot2)
+```
 
-Let us familiarize ourselves with the `dplyr` package. We will use functions such as `filter()`, `mutate()`, `select()`, `transmute()`, `arrange()`, `group_by()` and `summarise()`. 
+## Using the dplyr package
+
+The **dplyr** package has several functions. Some of the most commonly used ones are `filter()`, `mutate()`, `select()`, `transmute()`, `arrange()`, `group_by()` and `summarise()`. 
 
 ### Filtering the dataset 
 
-Let us use the `filter()` function to filter the dataset down to our required variables. 
+The `filter()` function to filters the data set down to the required variables. 
 
 ```{r}
 data1 <- mtcars %>%
-  filter(cyl == 4)
+  filter(Species == "setosa")
 ```
 
-This chink of code will filter our dataset to cars with only 4 cylinders. We have defined it to a new dataset called `data1`. Let us take a look at the structure of `data1` now. 
+This chink of code will filter the data set to flowers of the setosa species. It has been defined it to a new data set called **data1**. The structure of **data1** is as follows. 
 
 ```{r}
 str(data1)
 ```
 
-We see that the new dataset only has the number 4 in the *cyl* column. 
-
 ### Operating on columns 
 
-We can use the `mutate()` function to add, subtract, multiply and divide any number of columns. Let us use it in this example to create a new column which is the sum of two already existing columns in the dataset. 
+The `mutate()` function is used to add, subtract, multiply and divide any number of columns. An example would be to create a new column which is the sum of two already existing columns in the data set. 
 
 ```{r}
 data2 <- mtcars %>%
-  mutate(gear_cyl = gear + cyl)
+  mutate(length_width = Sepal.Length + Sepal.Width)
 ```
 
-We have added the *gear* and *cyl* columns together. Let us check the structure of the dataset now. 
+The *Sepal.Length* and *Sepal.Width* columns have been added together. The structure of the data set now is as follows.
 
 ```{r}
 str(data2)
 ```
 
-The new dataset `data2` has 12 columns now, as we added a new column *gear_cyl* to it. 
+The new data set **data2** now has 6 columns, as a new column *length_width* was added to it. 
 
 ### Transmute 
 
@@ -115,7 +118,7 @@ We can use the `transmute()` function as follows
 
 ```{r}
 data3 <- mtcars %>%
-  transmute(cyl_new = cyl * 2)
+  transmute(length_new = Sepal.Length * 2)
 ```
 
 We see that the new data is as follows.
@@ -124,41 +127,41 @@ We see that the new data is as follows.
 str(data3)
 ```
 
-We see that there is only one column, `cyl_new` and this contains the values of the original cylinder column multiplied by 2. 
+There is only one column *length_new* and this contains the values of the original sepal length column multiplied by 2. 
 
 ### Arrange
 
-The `arrange()` function orders a specific column of a dataset in in an ascending order. You can do the opposite and arrange the column in descending order by adding a `desc()` within the arrange function. It is done as follows. 
+The `arrange()` function orders a specific column of a data set in in an ascending order. The opposite is also possible and arranging the column in descending order can be done by adding a `desc()` within the arrange function. It is done as follows. 
 
 ```{r}
 data4 <- mtcars %>%
-  arrange(cyl)
+  arrange(Petal.Length)
 
 data5 <- mtcars %>%
-  arrange(desc(cyl))
+  arrange(desc(Petal.Length))
 ```
 
-We check the structure of `data4`
+The structure of **data4**
 
 ```{r}
 str(data4)
 ```
 
-We check the structure of `data5`
+The structure of **data5**
 
 ```{r}
 str(data5)
 ```
 
-We see that the *cyl* column is ascending and descending in each dataset respectively.
+The *Petal.Length* column is ascending and descending in each data set respectively.
 
 ### Selecting specific columns 
 
-We can select only the columns we require. 
+The `select()` functions only selects the columns that are specified.  
 
 ```{r}
 data6 <- mtcars %>%
-  select(cyl, wt)
+  select(Species, Petal.Width)
 ```
 
 When we check the structure of the new data, we can only see two columns, the only ones we selected. 
@@ -169,44 +172,91 @@ str(data6)
 
 ### Grouping 
 
-We can group rows of the dataset column based on their similarity. 
+We can group rows of the data set column based on their similarity. 
 
 ```{r}
 data7 <- mtcars %>%
-  group_by(cyl) %>%
-  summarise(wt, num = n())
+  group_by(Species) %>%
+  summarise(s.width = sum(Sepal.Width), num = n())
 ```
 
-This grouped the dataset on the basis of the number of cylinders each car has, and added up the weight's of the cars with the same number of cylinders. It also shows you the number of cars in each category. 
+This grouped the data set on the basis of the species of each flowers, and added up the sepal width's of the flowers of the same species. It also shows you the number of flowers in each category, which we already know to be 50 
 
 ```{r}
 data7
 ```
 
-# Plotting 
+## Plotting 
 
-The `ggplot2` package is used for creating beautiful visualizations. It works on the principle of layers, building plots layer-by-layer. We will create scatter plots in this assignment. Let us create a basic scatterplot. 
+The **ggplot2** package is used for creating beautiful visualizations. It works on the principle of layers, building plots layer-by-layer. We will create scatter plots in this assignment. Let us create a basic scatter plot. 
 
 ```{r}
-ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   geom_point()
 ```
+
+This plots the length of each flower against its width. 
 
 We can increase the size of the points to make the plot more readable.
 
 ```{r}
-g <- ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   geom_point(size = 3)
-
-g
 ```
+
+We can colour the original scatter plot on the basis of another column. 
+
+```{r}
+ggplot(iris) +
+  geom_point(aes(x = Sepal.Length, y = Sepal.Width, colour = Species), size = 3)
+```
+
+Similarly, we can do the same with the shape of the points on the plot as well. 
+
+```{r}
+ggplot(iris) +
+  geom_point(aes(x = Sepal.Length, y = Sepal.Width, shape = Species), size = 3)
+```
+
+The conclusion from this is that flowers of the *Setosa* species generally have the biggest sepal width's and the *Virginica* species has the highest sepal length's.
+
+Instead of colouring the points on the basis of a discrete variable or a factor, we can also colour the points on the basis of a continuous variable.
+
+```{r}
+ggplot(iris) +
+  geom_point(aes(x = Sepal.Length, y = Sepal.Width, colour = Petal.Length), size = 3)
+```
+
+### Smoothed Line
 
 We can also add a smoothed line to show the trend of the data in the scatter plot. We can add the geometry for the smoothed line to the already created object g. 
 
 ```{r}
-g + 
+g <- ggplot(iris) +
+  geom_point(aes(x = Sepal.Length, y = Sepal.Width, colour = Species), size = 3)
+
+g +
   geom_smooth()
 ```
+
+This shows the trend of the visualization with respect to the two variables on each of the axes. 
+
+The smoothed line can be coloured on the basis of another column. 
+
+```{r}
+g +
+  geom_smooth(aes(colour = species))
+```
+
+We can also demarcate the graph even further by dividing the one graph we have into 3 by using the `facet_wrap()` function. 
+
+```{r}
+g +
+  geom_smooth(aes(colour = species)) +
+  facet_wrap(~Species)
+```
+
+### Line Plot
 
 We can join the points with a line using a geometry function called `geom_line()`
 
@@ -215,32 +265,35 @@ g +
   geom_line(colour = "red")
 ```
 
-We can also draw a line on only the points representing the first 6 rows of the dataset. 
+This is another way to show the trend of the points in the scatter plot. The colour of the line has been changed to red. 
+
+We can also draw a line on only the points representing the first 6 rows of the data set. 
 
 ```{r}
 g + 
-  geom_line(data = head(mtcars), colour = "blue")
+  geom_line(data = head(iris), colour = "blue")
 ```
 
-We can colour the original scatter plot on the basis of another column. 
+### Labelling Points 
+
+We can label points on the plot using a package called **ggrepel**.
 
 ```{r}
-ggplot(mtcars) +
-  geom_point(aes(x = wt, y = mpg, colour = factor(cyl)), size = 3)
+library(ggrepel)
 ```
 
-Similarly, we can do the same with the shape of the points on the plot as well. 
+The code to add a label is as follows. 
 
 ```{r}
-ggplot(mtcars) +
-  geom_point(aes(x = wt, y = mpg, shape = factor(cyl)), size = 3)
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) +
+  geom_point(size = 3) +
+  geom_text(aes(label = Species))
 ```
 
-Instead of colouring the points on the basis of a discrete variable by wrapping it in a `factor()`, we can also colour the points on the basis of a continuous variable. The output would be as follows.
+However, we see that this is a bit too untidy, thus we use the **ggrepel** package.
 
 ```{r}
-ggplot(mtcars) +
-  geom_point(aes(x = wt, y = mpg, colour = hp), size = 3)
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) +
+  geom_point(size = 3) +
+  geom_text_repel(aes(label = Species), colour = "black")
 ```
-
-This document shows the ways that we can use the `dplyr` and `ggplot2` packages along with the pipe operators to produce meaningful analysis of data. 
