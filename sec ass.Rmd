@@ -85,7 +85,7 @@ The **dplyr** package has several functions. Some of the most commonly used ones
 The `filter()` function to filters the data set down to the required variables. 
 
 ```{r}
-data1 <- mtcars %>%
+data1 <- iris %>%
   filter(Species == "setosa")
 ```
 
@@ -100,7 +100,7 @@ str(data1)
 The `mutate()` function is used to add, subtract, multiply and divide any number of columns. An example would be to create a new column which is the sum of two already existing columns in the data set. 
 
 ```{r}
-data2 <- mtcars %>%
+data2 <- iris %>%
   mutate(length_width = Sepal.Length + Sepal.Width)
 ```
 
@@ -117,7 +117,7 @@ The new data set **data2** now has 6 columns, as a new column *length_width* was
 We can use the `transmute()` function as follows
 
 ```{r}
-data3 <- mtcars %>%
+data3 <- iris %>%
   transmute(length_new = Sepal.Length * 2)
 ```
 
@@ -134,10 +134,10 @@ There is only one column *length_new* and this contains the values of the origin
 The `arrange()` function orders a specific column of a data set in in an ascending order. The opposite is also possible and arranging the column in descending order can be done by adding a `desc()` within the arrange function. It is done as follows. 
 
 ```{r}
-data4 <- mtcars %>%
+data4 <- iris %>%
   arrange(Petal.Length)
 
-data5 <- mtcars %>%
+data5 <- iris %>%
   arrange(desc(Petal.Length))
 ```
 
@@ -160,7 +160,7 @@ The *Petal.Length* column is ascending and descending in each data set respectiv
 The `select()` functions only selects the columns that are specified.  
 
 ```{r}
-data6 <- mtcars %>%
+data6 <- iris %>%
   select(Species, Petal.Width)
 ```
 
@@ -175,7 +175,7 @@ str(data6)
 We can group rows of the data set column based on their similarity. 
 
 ```{r}
-data7 <- mtcars %>%
+data7 <- iris %>%
   group_by(Species) %>%
   summarise(s.width = sum(Sepal.Width), num = n())
 ```
@@ -207,14 +207,14 @@ ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width)) +
 We can colour the original scatter plot on the basis of another column. 
 
 ```{r}
-ggplot(iris) +
+ggplot(data = iris) +
   geom_point(aes(x = Sepal.Length, y = Sepal.Width, colour = Species), size = 3)
 ```
 
 Similarly, we can do the same with the shape of the points on the plot as well. 
 
 ```{r}
-ggplot(iris) +
+ggplot(data = iris) +
   geom_point(aes(x = Sepal.Length, y = Sepal.Width, shape = Species), size = 3)
 ```
 
@@ -223,19 +223,17 @@ The conclusion from this is that flowers of the *Setosa* species generally have 
 Instead of colouring the points on the basis of a discrete variable or a factor, we can also colour the points on the basis of a continuous variable.
 
 ```{r}
-ggplot(iris) +
+ggplot(data = iris) +
   geom_point(aes(x = Sepal.Length, y = Sepal.Width, colour = Petal.Length), size = 3)
 ```
 
 ### Smoothed Line
 
-We can also add a smoothed line to show the trend of the data in the scatter plot. We can add the geometry for the smoothed line to the already created object g. 
+We can also add a smoothed line to show the trend of the data in the scatter plot.
 
 ```{r}
-g <- ggplot(iris) +
-  geom_point(aes(x = Sepal.Length, y = Sepal.Width, colour = Species), size = 3)
-
-g +
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point(size = 3) +
   geom_smooth()
 ```
 
@@ -244,15 +242,16 @@ This shows the trend of the visualization with respect to the two variables on e
 The smoothed line can be coloured on the basis of another column. 
 
 ```{r}
-g +
-  geom_smooth(aes(colour = species))
+g <- ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) +
+  geom_point(size = 3)
+  geom_smooth(aes(colour = Species))
 ```
 
 We can also demarcate the graph even further by dividing the one graph we have into 3 by using the `facet_wrap()` function. 
 
 ```{r}
 g +
-  geom_smooth(aes(colour = species)) +
+  geom_smooth(aes(colour = Species)) +
   facet_wrap(~Species)
 ```
 
@@ -262,7 +261,7 @@ We can join the points with a line using a geometry function called `geom_line()
 
 ```{r}
 g +
-  geom_line(colour = "red")
+  geom_line(colour = "black")
 ```
 
 This is another way to show the trend of the points in the scatter plot. The colour of the line has been changed to red. 
@@ -271,14 +270,18 @@ We can also draw a line on only the points representing the first 6 rows of the 
 
 ```{r}
 g + 
-  geom_line(data = head(iris), colour = "blue")
+  geom_line(data = head(iris), colour = "black")
 ```
 
 ### Labelling Points 
 
 We can label points on the plot using a package called **ggrepel**.
 
-```{r}
+```{r, eval=FALSE}
+library(ggrepel)
+```
+
+```{r, include=FALSE}
 library(ggrepel)
 ```
 
